@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import './App.css'
 import LatestValueCard from './LatestValueCard'
 import UtilitiesLine from './UtilitiesLine';
+import './TimeTable.tsx'
 
 const Container = styled.div`
   width: 600px;
@@ -46,6 +47,8 @@ function App() {
             categoryValue={"Tidak Sehat"}
           />
         </LatestValueContainer>
+
+        <TimeTable></TimeTable>
 
         <UtilitiesLine />
 
