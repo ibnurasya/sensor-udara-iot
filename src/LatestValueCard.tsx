@@ -40,7 +40,7 @@ const LatestValueCard = ({
 
 
 const CardContainer = styled.div`
-  background-color: blue;
+  background-color: #487EF2;
   color: white;
   padding: 0.5rem;
   border-radius: 0.5rem;
@@ -48,7 +48,7 @@ const CardContainer = styled.div`
   max-width: 150px;
 `
 const CardTitle = styled.div`
-  background-color: magenta;
+  background-color: #FF00A8;
   margin: -0.5rem -0.5rem 0;
   border-radius: 0.5rem 0.5rem 0 0;
   padding: 0.2rem 1.5rem;
@@ -60,17 +60,12 @@ const ContainerValue = styled.div`
   flex: 1 1;
   justify-content: space-evenly;
   padding: 0.2rem 0.5rem 0;
-  border-bottom: 1px solid magenta;
   margin: -0.2rem -0.5rem 0;
 `
 
 const ItemValue = styled.div`
   padding: 0.5rem 0;
   width: 100%;
-
-  &:first-child {
-    border-right: 1px solid magenta;
-  }
 
   & p {
     margin: 0;
