@@ -1,0 +1,39 @@
+name: Deploy to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Setup env variables
+        run: |
+          echo '${{ secrets.FIREBASE_ENV_FILE_CONTENT }}' > src/firebase/firebase-env.ts
+
+      - name: Build with Vite
+        run: yarn build
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy to Firebase Hosting
+        run: |
+          firebase use --add ${{ secrets.FIREBASE_PROJECT_ID }} --token ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
+          firebase deploy --token ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
+

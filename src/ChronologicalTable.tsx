@@ -290,7 +290,7 @@ const columns = [
 ]
 
 function ChronologicalTable() {
-  const [data, setData] = React.useState(() => [...defaultData])
+  const [data] = React.useState(() => [...defaultData])
   // const rerender = React.useReducer(() => ({}), {})[1]
 
   const table = useReactTable({
