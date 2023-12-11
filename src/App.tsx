@@ -4,6 +4,7 @@ import LatestValueCard from './LatestValueCard'
 import UtilitiesLine from './UtilitiesLine';
 import ChronologicalTable from './ChronologicalTable.tsx';
 import Chart from './Chart.tsx';
+import { initializeFirebase } from './firebase/init.ts';
 
 const Container = styled.div`
   width: 600px;
@@ -26,6 +27,8 @@ const LatestValueContainer = styled.div`
   gap: 1rem;
   margin-top: 2rem;
 `
+
+initializeFirebase()
 
 function App() {
 
