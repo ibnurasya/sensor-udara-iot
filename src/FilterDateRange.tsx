@@ -4,6 +4,9 @@ import 'react-clock/dist/Clock.css';
 import DateTimePicker from "react-datetime-picker";
 import styled from "styled-components";
 import { useState } from 'react';
+import { fromUnixTime, getUnixTime } from 'date-fns';
+import { TimelineData } from './firebase/get-timeline-data';
+import { downloadTimelineDataAsCsv } from './csv-utils';
 
 const FilterDateContainer = styled.div`
   margin-top: 1rem;
@@ -64,20 +67,51 @@ const ExportButton = styled.button`
   }
 `
 
-const currentTime = new Date()
-const oneHourFromNow = new Date((new Date()).setHours(currentTime.getHours() + 1))
+export type FilterDateRangeProps = {
+  startDate: number;
+  endDate: number;
+  setStartDate: (newValue: number) => void;
+  setEndDate: (newValue: number) => void;
+  data: TimelineData[];
+}
 
-const FilterDateRange = () => {
-  const [startRange, setStartRange] = useState(currentTime)
-  const [endRange, setEndRange] = useState(oneHourFromNow)
+const FilterDateRange = ({
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+  data,
+}: FilterDateRangeProps) => {
+  const [_startDate, _setStartDate] = useState(startDate)
+  const [_endDate, _setEndDate] = useState(endDate)
+
+  const handleChange = (type: 'startdate' | 'enddate', value: Date) => {
+    switch (type) {
+      case 'startdate':
+        _setStartDate(getUnixTime(value)); break;
+      case 'enddate':
+        _setEndDate(getUnixTime(value)); break;
+      default:
+        break;
+    }
+  }
+
+  const applyChanges = () => {
+    setStartDate(_startDate)
+    setEndDate(_endDate)
+  }
+
+  const exportToCsv = () => {
+    downloadTimelineDataAsCsv(data)
+  }
 
   return (
     <FilterDateContainer>
       <div className='datepicker-container'>
         <div className='label'>Start Date</div>
         <DateTimePicker
-          onChange={(newTime) => setStartRange(newTime as Date)}
-          value={startRange}
+          onChange={(newTime) => handleChange('startdate', newTime as Date)}
+          value={fromUnixTime(_startDate)}
           format="y-MM-dd HH:mm"
           calendarIcon={null}
           clearIcon={null}
@@ -87,17 +121,17 @@ const FilterDateRange = () => {
       <div className='datepicker-container'>
         <div className='label'>End Date</div>
         <DateTimePicker
-          onChange={(newTime) => setEndRange(newTime as Date)}
-          value={endRange}
+          onChange={(newTime) => handleChange('enddate', newTime as Date)}
+          value={fromUnixTime(_endDate)}
           format="y-MM-dd HH:mm"
           calendarIcon={null}
           clearIcon={null}
         />
       </div>
-      
+
       <ButtonContainer>
-        <ApplyButton>Apply</ApplyButton>
-        <ExportButton>Export</ExportButton>
+        <ApplyButton onClick={applyChanges}>Apply</ApplyButton>
+        <ExportButton onClick={exportToCsv}>Export</ExportButton>
       </ButtonContainer>
 
     </FilterDateContainer>

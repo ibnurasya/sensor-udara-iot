@@ -54,6 +54,11 @@ const Chart = () => {
       const { CO, PM_2_5, PM_10 } = (await getChartValues());
       const labels = CO.map(a => format(a.date, 'dd-MMM'))
 
+      CO.reverse()
+      PM_2_5.reverse()
+      PM_10.reverse()
+      labels.reverse()
+
       const _data = {
         labels,
         datasets: [

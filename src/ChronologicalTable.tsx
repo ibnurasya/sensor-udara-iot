@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import './App.tsx'
 
 import {
@@ -10,240 +8,9 @@ import {
 } from '@tanstack/react-table'
 import styled from 'styled-components'
 import { format } from 'date-fns'
+import { TimelineData } from './firebase/get-timeline-data.ts'
 
-type ChronologicalRow = {
-  date: number
-  val_pm25: number
-  ispu_pm25: number
-  cat_ispu_pm25: string
-  val_pm10: number
-  ispu_pm10: number
-  cat_ispu_pm10: string
-  val_co: number
-  ispu_co: number
-  cat_ispu_co: string
-}
-
-const defaultData: ChronologicalRow[] = [
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Baik',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Baik',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Baik',
-  },
-  {
-    date: 1702028505,
-    val_pm25: 50,
-    ispu_pm25: 50,
-    cat_ispu_pm25: 'Buruk',
-    val_pm10: 50,
-    ispu_pm10: 50,
-    cat_ispu_pm10: 'Buruk',
-    val_co: 50,
-    ispu_co: 50,
-    cat_ispu_co: 'Buruk',
-  },
-]
-
-const columnHelper = createColumnHelper<ChronologicalRow>()
+const columnHelper = createColumnHelper<TimelineData>()
 
 const columns = [
   columnHelper.accessor('date', {
@@ -251,47 +18,60 @@ const columns = [
     id: 'date',
     cell: info => {
       const unixtime = info.getValue()
-      return format(new Date(unixtime * 1000), 'dd-MM-yyyy')
+      return format(new Date(unixtime * 1000), 'dd-MM-yyyy HH:mm')
     },
+    size: 120,
   }),
-  columnHelper.accessor('val_pm25', {
+  columnHelper.accessor('PM_2_5_SensorValue', {
     header: () => 'PM 2.5',
     cell: info => info.renderValue(),
+    maxSize: 80,
   }),
-  columnHelper.accessor('ispu_pm25', {
+  columnHelper.accessor('PM_2_5_ISPU_Number', {
     header: () => 'ISPU PM2.5',
     cell: info => info.renderValue(),
+    maxSize: 80,
   }),
-  columnHelper.accessor('cat_ispu_pm25', {
+  columnHelper.accessor('PM_2_5_ISPU_Category', {
     header: () => 'Kategori ISPU PM2.5',
+    maxSize: 120,
   }),
-  columnHelper.accessor('val_pm10', {
+  columnHelper.accessor('PM_10_SensorValue', {
     header: () => 'PM 10',
     cell: info => info.renderValue(),
+    maxSize: 80,
   }),
-  columnHelper.accessor('ispu_pm10', {
+  columnHelper.accessor('PM_10_ISPU_Number', {
     header: () => 'ISPU PM10',
     cell: info => info.renderValue(),
+    maxSize: 80,
   }),
-  columnHelper.accessor('cat_ispu_pm10', {
+  columnHelper.accessor('PM_10_ISPU_Category', {
     header: () => 'Kategori ISPU PM10',
+    maxSize: 120,
   }),
-  columnHelper.accessor('val_co', {
+  columnHelper.accessor('CO_SensorValue', {
     header: () => 'CO',
     cell: info => info.renderValue(),
+    maxSize: 80,
   }),
-  columnHelper.accessor('ispu_co', {
+  columnHelper.accessor('CO_ISPU_Number', {
     header: () => 'ISPU CO',
     cell: info => info.renderValue(),
+    maxSize: 80,
   }),
-  columnHelper.accessor('cat_ispu_co', {
+  columnHelper.accessor('CO_ISPU_Category', {
     header: () => 'Kategori ISPU CO',
+    cell: info => info.renderValue(),
+    maxSize: 120,
   }),
 ]
 
-function ChronologicalTable() {
-  const [data] = React.useState(() => [...defaultData])
-  // const rerender = React.useReducer(() => ({}), {})[1]
+type ChronologicalTableProps = {
+  data: TimelineData[];
+}
+
+function ChronologicalTable({ data }: ChronologicalTableProps) {
 
   const table = useReactTable({
     data,
@@ -306,13 +86,13 @@ function ChronologicalTable() {
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <th key={header.id}>
+                <th key={header.id} style={{ width: header.getSize() }}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                 </th>
               ))}
             </tr>
@@ -320,9 +100,9 @@ function ChronologicalTable() {
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
+            <tr key={row.id} className={row.index % 2 === 0 ? 'even' : 'odd'}>
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id}>
+                <td key={cell.id} style={{ width: cell.column.getSize() }}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -371,6 +151,10 @@ const ChronologicalTableContainer = styled.div`
         display: table;
         width: 100%;
         table-layout: fixed;
+
+        &.even {
+          background-color: #487ef254;
+        }
       }
     }
   }
