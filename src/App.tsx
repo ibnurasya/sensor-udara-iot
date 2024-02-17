@@ -49,6 +49,17 @@ function App() {
 
         <LatestValue />
 
+        <div style={{
+          marginTop: '1rem',
+          fontSize: '12px',
+          textAlign: 'left',
+          marginLeft: '0.5rem',
+        }}>
+          <span style={{color: 'red'}}>*</span>&nbsp;
+          Nilai ISPU dihitung berdasarkan pedoman ISPU Kementrian Lingkungan Hidup dan Kehutanan, info lebih lanjut&nbsp;
+          <a href="https://ditppu.menlhk.go.id/portal/read/indeks-standar-pencemar-udara-ispu-sebagai-informasi-mutu-udara-ambien-di-indonesia">klik di sini</a>
+        </div>
+
         <UtilitiesLine
           startDate={startDate}
           endDate={endDate}
