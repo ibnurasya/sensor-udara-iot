@@ -6,7 +6,8 @@ import Chart from "./Chart.tsx";
 import { initializeFirebase } from "./firebase/init.ts";
 import LatestValue from "./LatestValue.tsx";
 import { add, endOfDay, fromUnixTime, getUnixTime, startOfDay, sub } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TimelineData, getTimelineData } from "./firebase/get-timeline-data.ts";
 
 const Container = styled.div`
   width: 600px;
@@ -29,6 +30,17 @@ const defaultEndDate: number = getUnixTime(add(fromUnixTime(defaultStartDate), {
 function App() {
   const [startDate, setStartDate] = useState(defaultStartDate)
   const [endDate, setEndDate] = useState(defaultEndDate)
+  const [data, setData] = useState<TimelineData[]>(() => [])
+
+  useEffect(() => {
+    (async () => {
+      const timelineData = await getTimelineData(
+        `-${endDate}`,
+        `-${startDate}`
+      )
+      setData(timelineData.filter(Boolean))
+    })()
+  }, [startDate, endDate])
 
   return (
     <>
@@ -38,15 +50,14 @@ function App() {
         <LatestValue />
 
         <UtilitiesLine
-
           startDate={startDate}
           endDate={endDate}
           setStartDate={setStartDate}
           setEndDate={setEndDate}
-
+          data={data}
         />
 
-        <ChronologicalTable startDate={startDate} endDate={endDate} />
+        <ChronologicalTable data={data} />
       </Container>
     </>
   );

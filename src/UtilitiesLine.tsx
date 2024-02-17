@@ -12,6 +12,7 @@ const UtilitiesLine = ({
   endDate,
   setStartDate,
   setEndDate,
+  data,
 }: UtilitiesLineProps) => {
   return (
     <Container>
@@ -20,6 +21,7 @@ const UtilitiesLine = ({
         endDate={endDate}
         setStartDate={setStartDate}
         setEndDate={setEndDate}
+        data={data}
       />
     </Container>
   )

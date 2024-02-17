@@ -5,6 +5,8 @@ import DateTimePicker from "react-datetime-picker";
 import styled from "styled-components";
 import { useState } from 'react';
 import { fromUnixTime, getUnixTime } from 'date-fns';
+import { TimelineData } from './firebase/get-timeline-data';
+import { downloadTimelineDataAsCsv } from './csv-utils';
 
 const FilterDateContainer = styled.div`
   margin-top: 1rem;
@@ -70,6 +72,7 @@ export type FilterDateRangeProps = {
   endDate: number;
   setStartDate: (newValue: number) => void;
   setEndDate: (newValue: number) => void;
+  data: TimelineData[];
 }
 
 const FilterDateRange = ({
@@ -77,6 +80,7 @@ const FilterDateRange = ({
   endDate,
   setStartDate,
   setEndDate,
+  data,
 }: FilterDateRangeProps) => {
   const [_startDate, _setStartDate] = useState(startDate)
   const [_endDate, _setEndDate] = useState(endDate)
@@ -95,6 +99,10 @@ const FilterDateRange = ({
   const applyChanges = () => {
     setStartDate(_startDate)
     setEndDate(_endDate)
+  }
+
+  const exportToCsv = () => {
+    downloadTimelineDataAsCsv(data)
   }
 
   return (
@@ -123,7 +131,7 @@ const FilterDateRange = ({
 
       <ButtonContainer>
         <ApplyButton onClick={applyChanges}>Apply</ApplyButton>
-        <ExportButton>Export</ExportButton>
+        <ExportButton onClick={exportToCsv}>Export</ExportButton>
       </ButtonContainer>
 
     </FilterDateContainer>

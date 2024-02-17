@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import './App.tsx'
 
 import {
@@ -10,7 +8,7 @@ import {
 } from '@tanstack/react-table'
 import styled from 'styled-components'
 import { format } from 'date-fns'
-import { TimelineData, getTimelineData } from './firebase/get-timeline-data.ts'
+import { TimelineData } from './firebase/get-timeline-data.ts'
 
 const columnHelper = createColumnHelper<TimelineData>()
 
@@ -36,7 +34,7 @@ const columns = [
   }),
   columnHelper.accessor('PM_2_5_ISPU_Category', {
     header: () => 'Kategori ISPU PM2.5',
-    maxSize: 80,
+    maxSize: 120,
   }),
   columnHelper.accessor('PM_10_SensorValue', {
     header: () => 'PM 10',
@@ -50,7 +48,7 @@ const columns = [
   }),
   columnHelper.accessor('PM_10_ISPU_Category', {
     header: () => 'Kategori ISPU PM10',
-    maxSize: 80,
+    maxSize: 120,
   }),
   columnHelper.accessor('CO_SensorValue', {
     header: () => 'CO',
@@ -65,27 +63,15 @@ const columns = [
   columnHelper.accessor('CO_ISPU_Category', {
     header: () => 'Kategori ISPU CO',
     cell: info => info.renderValue(),
-    maxSize: 80,
+    maxSize: 120,
   }),
 ]
 
 type ChronologicalTableProps = {
-  startDate: number;
-  endDate: number;
+  data: TimelineData[];
 }
 
-function ChronologicalTable({ startDate, endDate }: ChronologicalTableProps) {
-  const [data, setData] = React.useState<TimelineData[]>(() => [])
-
-  React.useEffect(() => {
-    (async () => {
-      const timelineData = await getTimelineData(
-        `-${endDate}`,
-        `-${startDate}`
-      )
-      setData(timelineData.filter(Boolean))
-    })()
-  }, [startDate, endDate])
+function ChronologicalTable({ data }: ChronologicalTableProps) {
 
   const table = useReactTable({
     data,
