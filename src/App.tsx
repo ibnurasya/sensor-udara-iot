@@ -5,6 +5,8 @@ import ChronologicalTable from "./ChronologicalTable.tsx";
 import Chart from "./Chart.tsx";
 import { initializeFirebase } from "./firebase/init.ts";
 import LatestValue from "./LatestValue.tsx";
+import { add, endOfDay, fromUnixTime, getUnixTime, startOfDay, sub } from "date-fns";
+import { useState } from "react";
 
 const Container = styled.div`
   width: 600px;
@@ -21,7 +23,13 @@ const Container = styled.div`
 
 initializeFirebase();
 
+const defaultStartDate: number = getUnixTime(startOfDay(new Date()))
+const defaultEndDate: number = getUnixTime(add(fromUnixTime(defaultStartDate), { days: 1 }))
+
 function App() {
+  const [startDate, setStartDate] = useState(defaultStartDate)
+  const [endDate, setEndDate] = useState(defaultEndDate)
+
   return (
     <>
       <Container>
@@ -29,9 +37,16 @@ function App() {
 
         <LatestValue />
 
-        <UtilitiesLine />
+        <UtilitiesLine
 
-        <ChronologicalTable />
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+
+        />
+
+        <ChronologicalTable startDate={startDate} endDate={endDate} />
       </Container>
     </>
   );
