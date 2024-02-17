@@ -5,7 +5,7 @@ import ChronologicalTable from "./ChronologicalTable.tsx";
 import Chart from "./Chart.tsx";
 import { initializeFirebase } from "./firebase/init.ts";
 import LatestValue from "./LatestValue.tsx";
-import { add, endOfDay, fromUnixTime, getUnixTime, startOfDay, sub } from "date-fns";
+import { add, fromUnixTime, getUnixTime, startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
 import { TimelineData, getTimelineData } from "./firebase/get-timeline-data.ts";
 
