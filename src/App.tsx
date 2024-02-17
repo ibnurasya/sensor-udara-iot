@@ -54,6 +54,7 @@ function App() {
           fontSize: '12px',
           textAlign: 'left',
           marginLeft: '0.5rem',
+          color: 'black',
         }}>
           <span style={{color: 'red'}}>*</span>&nbsp;
           Nilai ISPU dihitung berdasarkan pedoman ISPU Kementrian Lingkungan Hidup dan Kehutanan, info lebih lanjut&nbsp;
