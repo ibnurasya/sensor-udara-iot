@@ -7,6 +7,7 @@ import {
   query,
   ref,
 } from "firebase/database";
+import { TimelineData } from "./get-timeline-data";
 
 export type LatestValue = {
   ISPU_Category: string;
@@ -20,7 +21,43 @@ export type LatestValues = {
   CO: LatestValue;
 };
 
-export const getLatestValues = async (): Promise<LatestValues> => {
+const defaultLatestValue = {
+  ISPU_Category: "",
+  ISPU_Number: "",
+  SensorValue: "",
+}
+
+export const getLatestValues = async (timelineData: TimelineData[]): Promise<LatestValues> => {
+  const result = {
+    PM_2_5: defaultLatestValue,
+    PM_10: defaultLatestValue,
+    CO: defaultLatestValue,
+  }
+
+  if (timelineData.length != 0) {
+    const latestData = timelineData[0];
+
+    result.PM_2_5 = {
+      ISPU_Category: latestData.PM_2_5_ISPU_Category,
+      ISPU_Number: latestData.PM_2_5_ISPU_Number,
+      SensorValue: latestData.PM_2_5_SensorValue,
+    }
+    result.PM_10 = {
+      ISPU_Category: latestData.PM_10_ISPU_Category,
+      ISPU_Number: latestData.PM_10_ISPU_Number,
+      SensorValue: latestData.PM_10_SensorValue,
+    }
+    result.CO = {
+      ISPU_Category: latestData.CO_ISPU_Category,
+      ISPU_Number: latestData.CO_ISPU_Number,
+      SensorValue: latestData.CO_SensorValue,
+    }
+  }
+
+  return result
+}
+
+export const _getLatestValues = async (): Promise<LatestValues> => {
   const database = getDatabase();
   const CO_ref = ref(database, "/CO/");
   const PM_2_5_ref = ref(database, "/PMduattklima/");

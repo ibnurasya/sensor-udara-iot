@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { LatestValues, getLatestValues } from "./firebase/get-latest-values";
 import styled from "styled-components";
 import LatestValueCard from "./LatestValueCard";
+import { TimelineData } from "./firebase/get-timeline-data";
 
 const defaultValue = {
   ISPU_Category: "",
@@ -24,16 +25,20 @@ const LatestValueContainer = styled.div`
   margin-top: 2rem;
 `;
 
-const LatestValue = () => {
+export type LatestValueProps = {
+  timelineData: TimelineData[]
+}
+
+const LatestValue = ({ timelineData }: LatestValueProps) => {
   const [latestValues, setLatestValues] =
     useState<LatestValues>(defaultLatestValues);
 
   useEffect(() => {
     (async () => {
-      const newLatestValues = await getLatestValues();
+      const newLatestValues = await getLatestValues(timelineData);
       setLatestValues(newLatestValues);
     })();
-  }, []);
+  }, [timelineData]);
 
   return (
     <>

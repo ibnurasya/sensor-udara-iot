@@ -5,7 +5,7 @@ import ChronologicalTable from "./ChronologicalTable.tsx";
 import Chart from "./Chart.tsx";
 import { initializeFirebase } from "./firebase/init.ts";
 import LatestValue from "./LatestValue.tsx";
-import { add, fromUnixTime, getUnixTime, startOfDay } from "date-fns";
+import { endOfDay, fromUnixTime, getUnixTime, startOfDay, sub } from "date-fns";
 import { useEffect, useState } from "react";
 import { TimelineData, getTimelineData } from "./firebase/get-timeline-data.ts";
 
@@ -24,8 +24,8 @@ const Container = styled.div`
 
 initializeFirebase();
 
-const defaultStartDate: number = getUnixTime(startOfDay(new Date()))
-const defaultEndDate: number = getUnixTime(add(fromUnixTime(defaultStartDate), { days: 1 }))
+const defaultEndDate: number = getUnixTime(endOfDay(new Date()))
+const defaultStartDate: number = getUnixTime(startOfDay(sub(fromUnixTime(defaultEndDate), { days: 6 })))
 
 function App() {
   const [startDate, setStartDate] = useState(defaultStartDate)
@@ -45,9 +45,9 @@ function App() {
   return (
     <>
       <Container>
-        <Chart />
+        <Chart timelineData={data} />
 
-        <LatestValue />
+        <LatestValue timelineData={data} />
 
         <div style={{
           marginTop: '1rem',
@@ -56,7 +56,7 @@ function App() {
           marginLeft: '0.5rem',
           color: 'black',
         }}>
-          <span style={{color: 'red'}}>*</span>&nbsp;
+          <span style={{ color: 'red' }}>*</span>&nbsp;
           Nilai ISPU dihitung berdasarkan pedoman ISPU Kementrian Lingkungan Hidup dan Kehutanan, info lebih lanjut&nbsp;
           <a href="https://ditppu.menlhk.go.id/portal/read/indeks-standar-pencemar-udara-ispu-sebagai-informasi-mutu-udara-ambien-di-indonesia">klik di sini</a>
         </div>
