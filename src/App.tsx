@@ -32,6 +32,8 @@ function App() {
   const [endDate, setEndDate] = useState(defaultEndDate)
   const [data, setData] = useState<TimelineData[]>(() => [])
 
+  
+
   useEffect(() => {
     (async () => {
       const timelineData = await getTimelineData(
@@ -45,6 +47,16 @@ function App() {
   return (
     <>
       <Container>
+      <div style={{
+          marginTop: '1rem',
+          fontSize: '24px',
+          fontWeight:'bold',
+          textAlign: 'center',
+          marginLeft: '0.5rem',
+          color: 'black',
+        }}>
+          ISPU AIR MONITOR
+        </div>
         <Chart timelineData={data} />
 
         <LatestValue timelineData={data} />
