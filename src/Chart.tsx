@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { getChartValues } from './firebase/get-chart-values';
 import { format } from 'date-fns';
+import { TimelineData } from './firebase/get-timeline-data';
 
 ChartJS.register(
   CategoryScale,
@@ -43,7 +44,11 @@ const ChartContainer = styled.div`
   /* width: 80vw; */
 `
 
-const Chart = () => {
+type ChartProps = {
+  timelineData: TimelineData[]
+}
+
+const Chart = ({ timelineData }: ChartProps) => {
   const [data, setData] = useState<ChartData<"line", (number | null)[], unknown>>({
     labels: [''],
     datasets: [],
@@ -51,7 +56,7 @@ const Chart = () => {
 
   useEffect(() => {
     (async () => {
-      const { CO, PM_2_5, PM_10 } = (await getChartValues());
+      const { CO, PM_2_5, PM_10 } = (await getChartValues(timelineData));
       const labels = CO.map(a => format(a.date, 'dd-MMM'))
 
       CO.reverse()
@@ -85,7 +90,7 @@ const Chart = () => {
 
       setData(_data)
     })()
-  }, [])
+  }, [timelineData])
 
   return (
     <ChartContainer>
